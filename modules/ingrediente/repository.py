@@ -1,3 +1,4 @@
+
 from typing import List, Optional, Any
 from sqlmodel import select
 from datetime import datetime
@@ -5,6 +6,7 @@ from datetime import datetime
 from core.repository import BaseRepository
 from .models import Ingrediente
 from .schemas import IngredienteCreate, IngredienteUpdate
+
 
 class IngredienteRepository(BaseRepository[Ingrediente, IngredienteCreate, IngredienteUpdate]):
     

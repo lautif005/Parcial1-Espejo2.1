@@ -1,8 +1,10 @@
+
 from pydantic import BaseModel, Field
 from typing import Optional, List
 
 from modules.categoria.schemas import CategoriaOut
 from modules.ingrediente.schemas import IngredienteOut
+
 
 class ProductoBase(BaseModel):
     nombre: str = Field(..., max_length=150)
@@ -12,8 +14,10 @@ class ProductoBase(BaseModel):
     stock_cantidad: int = Field(default=0, description="Cantidad de stock disponible")
     disponible: bool = Field(default=True, description="Estado en el servicio (en carta)")
 
+
 class ProductoCreate(ProductoBase):
     pass
+
 
 class ProductoUpdate(BaseModel):
     nombre: Optional[str] = Field(default=None, max_length=150)
@@ -23,11 +27,13 @@ class ProductoUpdate(BaseModel):
     stock_cantidad: Optional[int] = None
     disponible: Optional[bool] = None
 
+
 class ProductoOut(ProductoBase):
     id: int
 
     class Config:
         from_attributes = True
+
 
 class ProductoReadWithRelations(ProductoOut):
     categorias: List[CategoriaOut] = []

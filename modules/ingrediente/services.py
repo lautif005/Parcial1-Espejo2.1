@@ -1,17 +1,18 @@
+
 from typing import List
 from fastapi import HTTPException, status
 from .uow import IngredienteUnitOfWork
 from .schemas import IngredienteCreate, IngredienteUpdate
 from .models import Ingrediente
 
+
 class IngredienteService:
     
     @staticmethod
     def create_ingrediente(data: IngredienteCreate) -> Ingrediente:
         with IngredienteUnitOfWork() as uow:
-            ingrediente = uow.ingrediente_repo.create(data)
-            uow.session.commit()
-            uow.session.refresh(ingrediente)
+            ingrediente_model = Ingrediente.model_validate(data)
+            ingrediente = uow.ingrediente_repo.create(ingrediente_model)
             return ingrediente
 
     @staticmethod
@@ -40,9 +41,11 @@ class IngredienteService:
                     detail=f"Ingrediente con ID {ingrediente_id} no encontrado."
                 )
             
-            updated_ingrediente = uow.ingrediente_repo.update(ingrediente, data)
-            uow.session.commit()
-            uow.session.refresh(updated_ingrediente)
+            obj_data = data.model_dump(exclude_unset=True)
+            for key, value in obj_data.items():
+                setattr(ingrediente, key, value)
+                
+            updated_ingrediente = uow.ingrediente_repo.update(ingrediente)
             return updated_ingrediente
 
     @staticmethod
@@ -55,4 +58,3 @@ class IngredienteService:
                     detail=f"Ingrediente con ID {ingrediente_id} no encontrado."
                 )
             uow.ingrediente_repo.delete(ingrediente)
-            uow.session.commit()

@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, status, Path, Query
 from typing import List, Annotated, Optional
 from .schemas import ProductoCreate, ProductoUpdate, ProductoOut, ProductoReadWithRelations

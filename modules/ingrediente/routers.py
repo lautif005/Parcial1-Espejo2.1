@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, status, Path, Query
 from typing import List, Annotated
 from .schemas import IngredienteCreate, IngredienteUpdate, IngredienteOut
